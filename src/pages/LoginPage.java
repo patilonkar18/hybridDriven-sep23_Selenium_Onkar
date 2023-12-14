@@ -1,23 +1,76 @@
 package pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
 import base.ControlActions;
 
 public class LoginPage extends ControlActions {
 
+	@FindBy(xpath="//input[@id='userEmail']")
+	WebElement userEmailElement;
+	
+	@FindBy(xpath="//input[@id='userPassword']")
+	WebElement userPasswordElement;
+	
+	@FindBy(xpath="//input[@id='login']")
+	WebElement loginButtonElement;
+	
+	@FindBy(xpath="//div[@aria-label='Login Successfully']")
+	WebElement loginSuccessfulElement;
+	
+	@FindBy(xpath="//div[@aria-label='Incorrect email or password.']")
+	WebElement loginUnsuccessfulElement;
+	
+	@FindBy(xpath="//div[text()='*Email is required']")
+	WebElement emailIsRequiredElement;
+	
+	@FindBy(xpath="//div[text()='*Password is required']")
+	WebElement passwordIsRequired;
+	
+	public LoginPage(){
+		PageFactory.initElements(driver, this);
+	}
+	
 	public void login(String email, String password) {
-		System.out.println("Input the Login credentials");
-		driver.findElement(By.xpath("//input[@id='userEmail']")).sendKeys(email);
-		driver.findElement(By.xpath("//input[@id='userPassword']")).sendKeys(password);
-		
+		enterUserEmail(email);
+		enterPassword(password);
+		clickOnLoginButton();
+	}
+	
+	public void enterUserEmail(String email) {
+		System.out.println("Enter email");
+		userEmailElement.sendKeys(email);
+	}
+	
+	public void enterPassword(String password) {
+		System.out.println("Enter password");
+		userPasswordElement.sendKeys(password);
+	}
+	
+	public void clickOnLoginButton() {
 		System.out.println("Click on Login");
-		driver.findElement(By.xpath("//input[@id='login']")).click();
+		loginButtonElement.click();
 	}
 	
 	public boolean isLoginSuccessfullyDisplayed () {
-		WebElement loginSuccessfulElement = getElement("xpath", "//div[@aria-label='Login Successfully']", true);
-		return loginSuccessfulElement.isDisplayed();
+		return isElementDisplayedWithWait(loginSuccessfulElement);
+	}
+	
+	public boolean isLoginUnsuccessfulElementDisplayed () {
+		return isElementDisplayedWithWait(loginUnsuccessfulElement);
+	}
+	
+	public boolean isEmailRequiredElementDisplayed() {
+		return isElementDisplayed(emailIsRequiredElement);
+	}
+	
+	public boolean isPasswordRequiredElementDisplayed() {
+		return isElementDisplayed(passwordIsRequired);
+	}
+	
+	public String getCurrentUrl() {
+		return super.getCurrentUrl();
 	}
 }

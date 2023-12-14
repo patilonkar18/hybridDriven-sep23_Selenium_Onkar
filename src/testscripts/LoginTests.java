@@ -107,7 +107,9 @@ public class LoginTests {
 		}else {
 			loginFlag = loginPage.isLoginUnsuccessfulElementDisplayed();
 			Assert.assertTrue(loginFlag, "Incorrect email or password message is not displayed");
+			
 			loginFlag = loginPage.isLoginSuccessfullyDisplayed();
+			Assert.assertFalse(loginFlag, "Login Successful message is displayed");
 			
 			currentURL = loginPage.getCurrentUrl();
 			Assert.assertFalse(loginFlag, "Login Successful message is displayed");

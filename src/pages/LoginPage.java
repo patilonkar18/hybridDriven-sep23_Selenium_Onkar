@@ -33,10 +33,10 @@ public class LoginPage extends ControlActions {
 		PageFactory.initElements(driver, this);
 	}
 	
-	public void login(String email, String password) {
+	public DashBoardPage login(String email, String password) {
 		enterUserEmail(email);
 		enterPassword(password);
-		clickOnLoginButton();
+		return clickOnLoginButton();
 	}
 	
 	public void enterUserEmail(String email) {
@@ -49,9 +49,10 @@ public class LoginPage extends ControlActions {
 		userPasswordElement.sendKeys(password);
 	}
 	
-	public void clickOnLoginButton() {
+	public DashBoardPage clickOnLoginButton() {
 		System.out.println("Click on Login");
 		loginButtonElement.click();
+		return new DashBoardPage();
 	}
 	
 	public boolean isLoginSuccessfullyDisplayed () {

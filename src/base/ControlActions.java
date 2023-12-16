@@ -3,6 +3,8 @@ package base;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -146,5 +148,39 @@ public abstract class ControlActions {
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected List<String> getElementTextList(List<WebElement> listOfWebElement){
+		List<String> listOfElementText = new ArrayList<String>();
+		for(WebElement element : listOfWebElement) {
+			listOfElementText.add(element.getText());
+		}
+		return listOfElementText;
+	}
+	
+	protected void clickOnElement(String locatorType, String locatorValue, boolean isWaitRequired) {
+		clickOnElement(locatorType, locatorValue, isWaitRequired, false);
+	}
+	
+	protected void clickOnElement(String locatorType, String locatorValue, boolean isWaitRequired, boolean isWaitRequiredBeforeClick) {
+		WebElement e = getElement(locatorType, locatorValue, isWaitRequired);
+		if(isWaitRequiredBeforeClick) {
+			wait.until(ExpectedConditions.elementToBeClickable(e)).click();
+		}
+		e.click();
+	}
+	
+	protected void clickOnElement(WebElement element, boolean isWaitRequired) {
+		wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+	}
+	
+	protected String getElementText(String locatorType, String locatorValue, boolean isWaitRequired) {
+		return getElement(locatorType, locatorValue, isWaitRequired).getText();
+	}
+	
+	protected String getElementText(WebElement e, boolean isWaitRequired) {
+		if(isWaitRequired)
+			waitForElementToBeVisible(e);
+		return e.getText();
 	}
 }
